@@ -115,7 +115,7 @@ export default {
         },
         handleCurrentChange(val) {
             // console.log(`当前页: ${val}`);
-            this.page = val;
+            this.pageindex = val;
             this.getUserInfo();
         },
         update(id) {
@@ -177,6 +177,7 @@ export default {
                 .then(res => {
                     if (res.code == 200) {
                         this.usersInfo = res.data;
+                        this.getTotal();
                     }
                 })
                 .catch(err => {
@@ -198,7 +199,6 @@ export default {
     },
     created() {
         this.getUserInfo();
-        this.getTotal();
     },
     watch: {
         editShow: function(val) {

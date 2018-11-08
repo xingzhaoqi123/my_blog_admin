@@ -10,10 +10,12 @@ import store from "./store";
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
 import util from "./utils/index";
-
+import { parseTime } from "../filters";
 Vue.config.productionTip = false;
 Vue.prototype.$axios = util.axios;
 Vue.use(ElementUI);
+
+Vue.prototype.parseTime = parseTime;
 
 NProgress.inc(0.2);
 NProgress.configure({ easing: "ease", speed: 500, showSpinner: false });

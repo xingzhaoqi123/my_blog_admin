@@ -67,6 +67,7 @@ export default {
         }
     },
     created() {
+        this.getToken();
         this.content = this.article_content;
     }
 };

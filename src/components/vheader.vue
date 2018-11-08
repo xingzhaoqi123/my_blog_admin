@@ -11,7 +11,7 @@
         <div class="user">
             <el-dropdown :hide-on-click="false">
                 <span class="el-dropdown-link">
-                    <div class="head_img"><img src="../assets/二狗.jpg" alt=""></div>
+                    <div class="head_img"><img :src="userInfo.avatar" alt=""></div>
                     <div> name<i class="el-icon-arrow-down el-icon--right"></i></div>
                 </span>
                 <el-dropdown-menu slot="dropdown">
@@ -23,7 +23,11 @@
     </div>
 </template>
 <script>
+import { mapGetters } from "vuex";
 export default {
+    computed: {
+        ...mapGetters(["userInfo"])
+    },
     data() {
         return {
             ifRow: true,
@@ -80,6 +84,10 @@ export default {
                 if (res.code == 200) {
                     this.$message.success(res.msg);
                     // this.$store.commit("DEL_TOKEN");
+                    this.$store.dispatch("remove_token");
+                    this.$router.push({ path: "/" });
+                } else {
+                    this.$message.error(res.msg);
                     this.$router.push({ path: "/" });
                 }
             });

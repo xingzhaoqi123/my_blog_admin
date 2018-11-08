@@ -6,8 +6,8 @@
             </div>
             <div>
                 <el-form :model="info" ref="info" :rules="rule">
-                    <el-form-item label="博客类型" :label-width="formLabelWidth" prop="blogType">
-                        <el-select style="width:500px" v-model="info.blogType" multiple filterable allow-create default-first-option placeholder="请选择文章标签">
+                    <el-form-item label="博客类型" :label-width="formLabelWidth" prop="blogTypes">
+                        <el-select style="width:500px" v-model="info.blogTypes" multiple filterable allow-create default-first-option placeholder="请选择文章标签">
                             <el-option v-for="(item,index) in blogTypes" :key="index" :label="item.text" :value="item.value">
                             </el-option>
                         </el-select>
@@ -32,7 +32,7 @@
                         </el-switch>
                     </el-form-item>
                     <el-form-item label="" :label-width="formLabelWidth">
-                        <el-button type="primary" @click="xzq">添加</el-button>
+                        <el-button type="primary" @click="add">添加</el-button>
                     </el-form-item>
                 </el-form>
 
@@ -47,7 +47,8 @@ import { mapGetters } from "vuex";
 export default {
     components: { Editor },
     computed: {
-        ...mapGetters(["blogTypes"])
+        ...mapGetters(["blogTypes"]),
+        ...mapGetters(["userInfo"])
     },
     data() {
         return {
@@ -59,12 +60,13 @@ export default {
             formLabelWidth: "120px",
             isEdit: false,
             info: {
-                blogType: ["JavaScript"],
+                blogTypes: ["JavaScript"],
                 title: "",
                 desc: "",
                 sourse: 1,
                 visible: 1,
-                content: ""
+                content: "",
+                author: ""
             },
             rule: {
                 isVisible: [
@@ -75,7 +77,7 @@ export default {
                         type: "boolean"
                     }
                 ],
-                blogType: [
+                blogTypes: [
                     {
                         required: true,
                         message: "请选择至少选择一个文章类型",
@@ -108,8 +110,16 @@ export default {
         };
     },
     methods: {
-        xzq() {
-            console.log(this.info);
+        add() {
+            this.info.author = this.userInfo._id;
+            this.$axios.post("/blog/add", this.info).then(res => {
+                if (res.code == 200) {
+                    this.$message.success(res.msg);
+                    this.$router.push("article_list");
+                } else {
+                    this.$message.error(res.msg);
+                }
+            });
         }
     },
     created() {}

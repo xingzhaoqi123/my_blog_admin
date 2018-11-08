@@ -51,6 +51,9 @@ export default {
                 .then(res => {
                     if (res.code == 200) {
                         this.$message.success(res.msg);
+                        this.$store.dispatch("get_userinfo", res.loginData);
+                        // this.$store.commit("GET_USERINFO", res.loginData);
+                        this.$store.dispatch("get_token", res.token);
                         this.$router.push({ path: "/layout" });
                     } else {
                         this.$message.error(res.msg);
